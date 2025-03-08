@@ -47,12 +47,10 @@ const EmployeeAvailability = () => {
         const user = auth.currentUser;
         if (!user) return;
 
-        // ✅ Convert to UTC before saving
         const localStartTime = DateTime.fromISO(`${date}T${startTime}`, { zone: "local" });
         const utcStartTime = localStartTime.toUTC();
         const utcEndTime = DateTime.fromISO(`${date}T${endTime}`, { zone: "local" }).toUTC();
 
-        // ✅ Fix overlapping logic - Ensure correct time comparison
         const hasOverlap = availability.some(item => {
             if (date !== item.date) return false;
 
@@ -60,9 +58,9 @@ const EmployeeAvailability = () => {
             const existingEndUTC = DateTime.fromISO(item.endTimeUTC, { zone: "utc" });
 
             return (
-                (utcStartTime >= existingStartUTC && utcStartTime < existingEndUTC) || // ✅ Starts inside an existing slot
-                (utcEndTime > existingStartUTC && utcEndTime <= existingEndUTC) ||     // ✅ Ends inside an existing slot
-                (utcStartTime <= existingStartUTC && utcEndTime >= existingEndUTC)     // ✅ Fully overlaps an existing slot
+                (utcStartTime >= existingStartUTC && utcStartTime < existingEndUTC) || 
+                (utcEndTime > existingStartUTC && utcEndTime <= existingEndUTC) ||     
+                (utcStartTime <= existingStartUTC && utcEndTime >= existingEndUTC)     
             );
         });
 

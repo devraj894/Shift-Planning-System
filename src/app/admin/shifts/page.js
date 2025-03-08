@@ -37,7 +37,6 @@ const AdminShifts = () => {
             const querySnapshot = await getDocs(q);
             const availableEmployees = querySnapshot.docs.map(doc => doc.data());
 
-            // ✅ Find the best matching employee (earliest available)
             const bestEmployee = availableEmployees.find(avail =>
                 shiftStartUTC >= avail.startTimeUTC &&
                 shiftEndUTC <= avail.endTimeUTC
@@ -65,7 +64,6 @@ const AdminShifts = () => {
         const shiftStartUTC = DateTime.fromISO(`${date}T${startTime}`, { zone: "local" }).toUTC().toISO();
         const shiftEndUTC = DateTime.fromISO(`${date}T${endTime}`, { zone: "local" }).toUTC().toISO();
 
-        // ✅ Ensure shifts do not overlap for the selected employee
         const hasOverlap = shifts.some(shift =>
             shift.employeeId === matchedEmployee &&
             shift.date === date &&
